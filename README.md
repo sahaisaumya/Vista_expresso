@@ -12,11 +12,11 @@ For the app to run, the system requires R (version 3.4) to be installed (details
 
 To run the app, download all the files. In R console run the following commands:
 
-'''
+```
 install.packages("shiny") #just when running for the first time
 require(shiny)
 runApp("yourfolderpath/feeding_stats.R")
-'''
+```
 
 The app will open in your browser.
 
