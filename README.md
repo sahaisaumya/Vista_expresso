@@ -1,6 +1,6 @@
 # Vista_expresso
 
-This script is useful for analysing the feeding datafiles saved from visual_expresso_gui. You can easily upload the excel files to plot some of the common quantities as indicated in Yapici et al, Cell (2016).
+(Vi)sualization and (St)atistical (A)nalysis is useful for analysing the feeding(only) datafiles saved from visual_expresso_gui. You can easily upload the excel files to plot some of the common quantities as indicated in Yapici et al., Cell (2016).
 
 ## Getting started
 
