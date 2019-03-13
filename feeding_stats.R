@@ -69,7 +69,8 @@ ui <- fluidPage(
               "Total volume" = "sig_tot",
               "Latency" = "sig_lat",
               "Average volume" = "sig_ave",
-              "Events" = "sig_eve"
+              "Events" = "sig_eve",
+              "Bout Rate" = "sig_br"
             )
           ),
           textOutput("tests"),
@@ -298,8 +299,8 @@ server <- function(input, output) {
       feed <- feed_data$data
       if (length(unique(feed$label)) < 2)
         return(NULL)
-      
-      t = kruskal.test(get_choice() ~ as.factor(feed$label))
+      opt_all = get_choice()
+      t = kruskal.test(opt_all$opt_data ~ as.factor(opt_all$opt_label))
       paste("P-value for Kruskal-Wallis rank sum test is ", t$p.value)
       #posthoc.kruskal.nemenyi.test(x= feed$Total.Volume..nL., g=as.factor(feed$label) , method = "Turkey")
     })
@@ -312,9 +313,9 @@ server <- function(input, output) {
       feed <- feed_data$data
       if (length(unique(feed$label)) < 2)
         return(NULL)
-      
-      t = posthoc.kruskal.nemenyi.test(x = get_choice() ,
-                                       g = as.factor(feed$label) ,
+      opt_all = get_choice()
+      t = posthoc.kruskal.nemenyi.test(x = opt_all$opt_data ,
+                                       g = as.factor(opt_all$opt_label) ,
                                        method = "Turkey")
       classes =  c(unlist(dimnames((t$p.value))[1]))
       op = data.frame(t$p.value)
@@ -326,15 +327,26 @@ server <- function(input, output) {
   get_choice <-
     eventReactive(c(input$addFile, input$refresh, input$sig_test), {
       feed <- feed_data$data
-      t = switch(
+      opt_data = switch(
         input$sig_test,
         sig_vol = feed$`Total Volume [nL]`,
         sig_lat = feed$Latency,
         sig_ave = feed$AveBoutVol,
         sig_eve = feed$`Number of Events`,
+        sig_br = (bout_data$data)$x,
         feed$`Total Volume [nL]`
       )
-      t
+      opt_label = switch(
+        input$sig_test,
+        sig_vol = feed$label,
+        sig_lat = feed$label,
+        sig_ave = feed$label,
+        sig_eve = feed$label,
+        sig_br = (bout_data$data)$label,
+        feed$label
+      )
+      opt_combined <- list(opt_label = opt_label, opt_data = opt_data)
+      
     })
   output$tests <- renderText({
     significance_test()
