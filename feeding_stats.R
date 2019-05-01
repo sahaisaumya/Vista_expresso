@@ -282,7 +282,7 @@ server <- function(input, output) {
         x = as.factor(brdat$label),
         y = brdat$x,
         fill = label
-      )) + geom_boxplot(width = box_width, lwd = 1) + xlab("Label") + ylab("Average bout rate [nl/s]") +
+      )) + geom_boxplot(width = box_width, lwd = 1) + xlab("Label") + ylab("Average bout rate [nl/s]") + ylim(0,15)+
         scale_fill_brewer(palette = "Pastel2")
       
     })
@@ -370,6 +370,7 @@ server <- function(input, output) {
         print(data_plot_latency())
         print(data_plot_totvol())
         print(data_plot_avVol())
+        print(data_plot_boutrate())
         dev.off()
       }
     )
